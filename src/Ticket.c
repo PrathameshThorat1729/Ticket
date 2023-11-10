@@ -37,6 +37,7 @@ int main()
     // Render new Page, if Changed
     if(last_page != current_page)
     {
+      key = NONE;
       pages[current_page](key);
       last_page = current_page;
     }
