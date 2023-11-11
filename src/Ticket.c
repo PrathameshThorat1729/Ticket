@@ -4,12 +4,14 @@
 #include "utils.h"
 
 #include "home.h"
+#include "tic_tac_toe.h"
 
 // This is changes by other pages using function
 // in Ticket.h -> void change_page(int page);
 static int current_page = HOME_PAGE;
 static int last_page = HOME_PAGE;
 
+// Input from enum Pages { ... } in Ticket.h
 void change_page(int page)
 {
   last_page = current_page;
@@ -18,19 +20,19 @@ void change_page(int page)
 
 int main()
 {
-  signal(SIGINT,SIG_IGN);
+ // signal(SIGINT,SIG_IGN);
   enable_raw_mode();
   
   // Order must be same as defined enum
   // in Ticket.h -> enum Pages { ... }
-  void (*pages[])(int) = { home_page };
+  void (*pages[])(int) = { home_page, tic_tac_toe };
   
   int csi, key, started = 0;
   do
   {
     key = get_key(csi);
     // Skip Other invalid keys only if program is started
-    if (key == NONE && started++) continue;
+    if (key == NONE && started++) { continue; }
     
     pages[current_page](key);
     

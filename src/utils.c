@@ -56,10 +56,32 @@ int get_key(int csi)
     {
       case 'A': return ARROW_UP; break;
       case 'B': return ARROW_DOWN; break;
-      case 'C': return ARROW_LEFT; break;
-      case 'D': return ARROW_RIGHT; break;
+      case 'C': return ARROW_RIGHT; break;
+      case 'D': return ARROW_LEFT; break;
     }
   }
   else if (csi == '\n') return ENTER;
   return NONE;
+}
+
+void print_option(int id, char* option, int selected_option)
+{
+  if (id == selected_option)
+    printf("\t\033[32;1m[\033[36m*\033[32m]\033[37m %s\033[0m\n", option);
+  else
+    printf("\t\033[32;2m[\033[36m%d\033[32m]\033[37m %s\033[0m\n",id, option);
+}
+
+void change_current_option(int key, int total_options, int *current_option)
+{
+  if (key == ARROW_UP)
+  {
+    if( *current_option == 1) { *current_option += total_options; }
+    *current_option -= 1;
+  }
+  else if (key == ARROW_DOWN)
+  {
+    if (*current_option == total_options) { *current_option = 0; }
+    *current_option += 1;
+  }
 }
