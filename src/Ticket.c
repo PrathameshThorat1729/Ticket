@@ -20,7 +20,7 @@ void change_page(int page)
 
 int main()
 {
- // signal(SIGINT,SIG_IGN);
+  signal(SIGINT,SIG_IGN);
   enable_raw_mode();
   
   // Order must be same as defined enum
