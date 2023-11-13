@@ -1,31 +1,36 @@
 #include "home.h"
 
-void home_page(int key)
+int home_page()
 {
-  static int current_option = 1;
-  int total_options = EXIT; // Last Option in Enum is no. of items if Starts with 1
+  int csi = NONE, key, page = HOME_PAGE, i = 0;
   
-  // Add Actions to keys presses
-  change_current_option(key, total_options, &current_option);
+  Options pages;
+  conf_options(EXIT + 1, TIC_TAC_TOE, &pages);
+  add_option(TIC_TAC_TOE, "Tic-Tac-Toe",&pages);
+  add_option(HANGMAN, "Hangman",&pages);
+  add_option(EXIT, "Exit",&pages);
   
-  ////////////////////////////////////////////
-  /// Add New Page here in switch statment ///
-  ////////////////////////////////////////////
-  if (key == ENTER)
+  do
   {
-    // If change_page() is called input must be from
-    // enum Pages { ... } in Ticket.h
-    switch(current_option)
+    key = get_key(csi);
+    if (key == NONE && i++) continue;
+    change_option(key, &pages);
+    
+    if (key == ENTER)
     {
-      case TIC_TAC_TOE: change_page(TIC_TAC_TOE_PAGE); break;
-      case EXIT: quit(); break;
+      switch(get_current_option(&pages))
+      {
+        case TIC_TAC_TOE: page = TIC_TAC_TOE_PAGE; break;
+        case EXIT: page = QUIT; break;
+      }
     }
-  }
+    else {
+      print_header();
+      print_options(&pages);
+    }
+    
+  } while(page == HOME_PAGE && (csi = getc(stdin)) != EOF);
+  free_options(&pages);
   
-  print_header();
-  printf("\t\033[37mUse ↑ and ↓ keys to naviagte and \033[3menter\033[0m\n\n");
-  print_option(TIC_TAC_TOE,"Tic-Tac-Toe",current_option);
-  print_option(HANGMAN,"Hangman",current_option);
-  print_option(EXIT,"Exit",current_option);
-  
+  return page;
 }

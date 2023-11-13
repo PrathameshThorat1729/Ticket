@@ -6,8 +6,8 @@
 
 // Here EXIT must be last item ... It use to calculate no. of Options
 // in home.c -> void home_page(int key) { ... }
-enum Options { TIC_TAC_TOE = 1, HANGMAN, EXIT };
+enum Options { TIC_TAC_TOE, HANGMAN, EXIT };
 
-void home_page(int key);
+int home_page();
 
 #endif // TICKET_HOME_H

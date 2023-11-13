@@ -3,11 +3,9 @@
 
 #include "utils.h"
 #include "Ticket.h"
-#include <time.h>
 
-void tic_tac_toe(int key);
+int tic_tac_toe();
 char get_move_char(int move); // Return 'x' or 'o'
-int detect_win(int game_state[3][3]);
-void reset();
+int detect_win(int game_state[3][3], int win[8][3][2]);
 
 #endif // TICKET_TIC_TAC_TOE_H
