@@ -10,13 +10,13 @@ void conf_options(int total_opt, int default_opt, Options* opts)
 
 void print_options(Options* opts)
 {
-  printf("\n\t\033[37mUse ↑ and ↓ keys to naviagte and \033[3menter\033[0m\n\n");
+  printf("\n\t\033[37mUse ↑ and ↓ keys to naviagte and \033[3menter\033[0;40m\n\n");
   for (int i = 0; i < opts->total_opt; i++)
   {
     if (i == opts->current_opt)
-      printf("\t\033[32;1m[\033[36m#\033[32m]\033[37m %s\033[0m\n", (opts->opts[i]).desc);
+      printf("\t\033[32;1m[\033[36m#\033[32m]\033[37m %s\033[0;40m\n", (opts->opts[i]).desc);
     else
-      printf("\t\033[32;2m[\033[36m•\033[32m]\033[37m %s\033[0m\n", (opts->opts[i]).desc);
+      printf("\t\033[32;2m[\033[36m•\033[32m]\033[37m %s\033[0;40m\n", (opts->opts[i]).desc);
   }
 }
 
