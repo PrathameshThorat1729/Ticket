@@ -38,13 +38,13 @@ int tic_tac_toe()
   int csi = NONE, key, page = TIC_TAC_TOE_PAGE, i = 0;
   
   Options start_opts;
-  conf_options(GB + 1, PTC, &start_opts);
+  conf_options(GB + 1, &start_opts);
   add_option(PTC, "Player vs Computer", &start_opts);
   add_option(PTP, "Player vs Player", &start_opts);
   add_option(GB, "Go Back", &start_opts);
   
   Options end_opts;
-  conf_options(QUIT + 1, REPLAY, &end_opts);
+  conf_options(QUIT + 1, &end_opts);
   add_option(REPLAY, "Replay", &end_opts);
   add_option(QUIT, "Quit", &end_opts);
   
@@ -62,7 +62,7 @@ int tic_tac_toe()
       if (key == ENTER)
       {
         game_mode = get_current_option(&start_opts);
-        if(game_mode == GB) page = HOME_PAGE;
+        if(game_mode == GB) {page = HOME_PAGE; break;}
         game_running = 1;
         key = NONE;
       }

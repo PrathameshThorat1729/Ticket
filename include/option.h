@@ -17,7 +17,7 @@ typedef struct {
   Option* opts;
 } Options;
 
-void conf_options(int total_opt, int default_opt, Options* opts);
+void conf_options(int total_opt, Options* opts);
 void add_option(int id, char* desc, Options* opts);
 void print_options(Options* opts);
 void change_option(int key, Options* opts);

@@ -5,10 +5,10 @@ int home_page()
   int csi = NONE, key, page = HOME_PAGE, i = 0;
   
   Options pages;
-  conf_options(EXIT + 1, TIC_TAC_TOE, &pages);
-  add_option(TIC_TAC_TOE, "Tic-Tac-Toe",&pages);
-  add_option(HANGMAN, "Hangman",&pages);
-  add_option(EXIT, "Exit",&pages);
+  conf_options(QUIT, &pages);
+  add_option(TIC_TAC_TOE_PAGE, "Tic-Tac-Toe",&pages);
+  add_option(HANGMAN_PAGE, "Hangman",&pages);
+  add_option(QUIT, "Exit",&pages);
   
   do
   {
@@ -17,14 +17,9 @@ int home_page()
     change_option(key, &pages);
     
     if (key == ENTER)
+      page = get_current_option(&pages);
+    else
     {
-      switch(get_current_option(&pages))
-      {
-        case TIC_TAC_TOE: page = TIC_TAC_TOE_PAGE; break;
-        case EXIT: page = QUIT; break;
-      }
-    }
-    else {
       print_header();
       print_options(&pages);
     }

@@ -1,10 +1,10 @@
 #include "option.h"
 
-void conf_options(int total_opt, int default_opt, Options* opts)
+void conf_options(int total_opt, Options* opts)
 {
   opts->total_opt = total_opt;
   opts->added_opts = 0;
-  opts->current_opt = default_opt;
+  opts->current_opt = 0;
   opts->opts = calloc(sizeof(Option), total_opt);
 }
 
