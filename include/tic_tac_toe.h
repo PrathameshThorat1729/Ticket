@@ -5,7 +5,6 @@
 #include "Ticket.h"
 
 int tic_tac_toe();
-char get_move_char(int move); // Return 'x' or 'o'
 int detect_win(int game_state[3][3], int win[8][3][2]);
 void make_move(int nth_move, int game_state[3][3]);
 

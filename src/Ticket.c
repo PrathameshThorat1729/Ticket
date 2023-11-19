@@ -7,14 +7,14 @@ int main()
   
   // Order must be same as defined enum
   // in Ticket.h -> enum Pages { ... }
-  int (*pages[QUIT])() = { home_page, tic_tac_toe, hangman };
+  int (*pages[QUIT_PAGE])() = { home_page, tic_tac_toe, hangman };
   int current_page = HOME_PAGE;
   
   while(1)
   {
     current_page = pages[current_page]();
     
-    if (current_page == QUIT) break;
+    if (current_page == QUIT_PAGE) break;
   }
   quit();
   return 0;

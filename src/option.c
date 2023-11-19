@@ -10,7 +10,6 @@ void conf_options(int total_opt, Options* opts)
 
 void print_options(Options* opts)
 {
-  printf("\n\t\033[37mUse ↑ and ↓ keys to naviagte and \033[3menter\033[0;40m\n\n");
   for (int i = 0; i < opts->total_opt; i++)
   {
     if (i == opts->current_opt)

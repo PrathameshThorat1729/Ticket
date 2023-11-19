@@ -33,9 +33,9 @@ void disable_raw_mode()
 void print_header()
 {
   clrscr();
-  printf("\033[96m\n\n\t\t▀█▀ █ █▀▀ █▄▀ █▀▀ ▀█▀\n");
+  printf("\033[96m\n\t\t▀█▀ █ █▀▀ █▄▀ █▀▀ ▀█▀\n");
   printf("\t\t░█░ █ █▄▄ █░█ ██▄ ░█░\n\n\033[0m");
-  printf("\t\t\033[34mTerminal Arcade\033[0m  \033[37;1m%s\033[0m\n\t  Works best with black background\n\n\n", VERSION);
+  printf("\t\t\033[34mTerminal Arcade\033[0m  \033[37;1m%s\033[0m\n\n", VERSION);
 }
 
 void quit()
@@ -45,9 +45,10 @@ void quit()
   exit(EXIT_SUCCESS);
 }
 
-int get_key(int csi)
+int get_key(int csi, int* raw_key)
 {
   int ch;
+  if (raw_key != NULL) *raw_key = 0;
   
   if (csi == '[') // Detecting Escape Squence and Arrow Keys
   {
@@ -61,5 +62,6 @@ int get_key(int csi)
     }
   }
   else if (csi == '\n') return ENTER;
+  if (raw_key != NULL) *raw_key = csi;
   return NONE;
 }

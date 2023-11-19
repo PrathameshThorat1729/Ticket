@@ -11,6 +11,6 @@
 // in home.c -> void home_page(int key) { ... }
 // <NAME>_PAGE is important to diff between options
 // in home.h -> enum Options { ... }
-enum Pages { HOME_PAGE, TIC_TAC_TOE_PAGE, HANGMAN_PAGE, QUIT };
+enum Pages { HOME_PAGE, TIC_TAC_TOE_PAGE, HANGMAN_PAGE, QUIT_PAGE };
 
 #endif // TICKET_H

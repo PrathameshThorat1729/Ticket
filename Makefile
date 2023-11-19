@@ -3,7 +3,7 @@
 ###############################
 
 PROJECT = Ticket
-VERSION = v0.4
+VERSION = v0.5
 EXE = ticket
 
 SRCDIR = src

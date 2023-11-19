@@ -50,7 +50,7 @@ int tic_tac_toe()
   
   do
   {
-    key = get_key(csi);
+    key = get_key(csi, NULL);
     if (key == NONE && i++) continue;
     
     // Game Starting
@@ -113,15 +113,25 @@ int tic_tac_toe()
     }
   
     print_header();
-    printf("\tPlayer : %c\n\n\t", get_move_char(player));
+    if (player == X) printf("\tPlayer : X\n\n\t");
+    else if (player == O) printf("\tPlayer : O\n\n\t");
     for (int i = 0; i < 3; i++) // i -> y-coordinate
     {
       for (int j = 0; j < 3; j++) // j -> x-coordinate
       {
-        if (pos[0] == j && pos[1] == i)
-          printf(" \033[30;47m %c \033[0m ", get_move_char(game_state[i][j]));
+        int p = game_state[i][j];
+        if (pos[0] == j && pos[1] == i && winner == N)
+        {
+          if (p == X) printf(" \033[30;47m X \033[0m ");
+          else if (p == O) printf(" \033[30;47m O \033[0m ");
+          else printf(" \033[30;47m   \033[0m ");
+        }
         else
-          printf("  %c  ", get_move_char(game_state[i][j]));
+        {
+          if (p == X) printf("  \033[33;1mX\033[0m  ");
+          else if (p == O) printf("  \033[36;1mO\033[0m  ");
+          else printf("     ");
+        }
         if(j < 2) printf(" │ ");
       }
       printf("\n\t");
@@ -132,22 +142,18 @@ int tic_tac_toe()
     {
       game_running = 0;
       if (winner == T)
-        printf("\n\tNo one won, It's a \033[1mTie\033[0m\n");
+        printf("\n\tNo one won, It's a \033[32;1mTie\033[0m\n");
       else
-        printf("\n\t\033[1m%c\033[0m won\n", get_move_char(winner));
+      {
+        if (player == X) printf("\n\t\033[32;1mX\033[0m won\n");
+        else if (player == O) printf("\n\t\033[32;1mO\033[0m won\n");
+      }
       print_options(&end_opts);
     }
   } while(page == TIC_TAC_TOE_PAGE && (csi = getc(stdin)) != EOF);
   free_options(&end_opts);
   
   return page;
-}
-
-char get_move_char(int move)
-{
-  if (move == X) return 'x';
-  if (move == O) return 'o';
-  return ' ';
 }
 
 int detect_win(int game_state[3][3], int win[8][3][2])
@@ -212,8 +218,9 @@ void make_move(int nth_move, int game_state[3][3])
     else if (game_state[0][2] == X && game_state[2][0] == X)
     { game_state[0][1] = O; return;}
   }
+  
   int moved = 0;
-  int emp[2] = { -1 };
+  int emp[2] = { -1 }; // empty cell location
   
   // Horizontal
   for (int i = 0; i < 3 && moved == 0; i++)
