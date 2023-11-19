@@ -8,6 +8,11 @@ Ticket : A Collection of interactive, puzzled, joyful game at your terminal.
 $ git clone https://github.com/PrathameshThorat1729/Ticket
 ```
 
+## Installation
+```bash
+$ git clone https://github.com/PrathameshThorat1729/Ticket
+```
+
 ## Building
 ```bash
 $ make build

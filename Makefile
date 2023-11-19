@@ -3,7 +3,7 @@
 ###############################
 
 PROJECT = Ticket
-VERSION = v0.5
+VERSION = v0.6
 EXE = ticket
 
 SRCDIR = src
@@ -15,7 +15,7 @@ OBJDIR = bin/obj
 ##### Other Settings and Targets #####
 ######################################
 
-.PHONY: build obj run clean
+.PHONY: build obj run clean install
 
 SRCS = $(wildcard $(SRCDIR)/*.c) # Source File List
 OBJS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS)) # Object File List
@@ -28,7 +28,7 @@ all: $(BUILDDIR) $(OBJDIR) build
 build: $(BUILDDIR)/$(EXE)
 obj: $(OBJS)
 
-run: build
+run: install
 	@$(BUILDDIR)/$(EXE)
 
 $(BUILDDIR)/$(EXE): $(OBJS)
@@ -46,4 +46,8 @@ $(OBJDIR):
 
 # Cleaning Target
 clean:
-	rm -rf $(BUILDDIR)/* $(OBJDIR)/*
+	rm -rf $(BUILDDIR)/* $(OBJDIR)/* ~/.config/$(PROJECT)
+
+install: build
+	mkdir -p ~/.config/$(PROJECT)
+	cp -r resource/* ~/.config/$(PROJECT)

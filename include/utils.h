@@ -18,7 +18,6 @@ enum Keys {
   NONE
 };
 
-void clrscr();
 void enable_raw_mode();
 void disable_raw_mode();
 void print_header();

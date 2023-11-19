@@ -3,17 +3,12 @@
 static struct termios default_mode, raw_mode;
 static int is_raw_enabled = 0;
 
-void clrscr()
-{
-  system("clear");
-}
-
 void enable_raw_mode()
 {
   if (is_raw_enabled)
     return;
   
-  printf("\033[?25l");
+  printf("\033[?25l\033[0m");
   tcgetattr(STDIN_FILENO, &default_mode);
   raw_mode = default_mode;
   raw_mode.c_lflag &= ~(ICANON | ECHO);
@@ -32,16 +27,16 @@ void disable_raw_mode()
 
 void print_header()
 {
-  clrscr();
-  printf("\033[96m\n\t\t▀█▀ █ █▀▀ █▄▀ █▀▀ ▀█▀\n");
-  printf("\t\t░█░ █ █▄▄ █░█ ██▄ ░█░\n\n\033[0m");
+  system("clear");
+  printf("\n\t\t\033[96m▀█▀ █ █▀▀ █▄▀ █▀▀ ▀█▀\033[0m\n");
+  printf("\t\t\033[96m░█░ █ █▄▄ █░█ ██▄ ░█░\033[0m\n\n");
   printf("\t\t\033[34mTerminal Arcade\033[0m  \033[37;1m%s\033[0m\n\n", VERSION);
 }
 
 void quit()
 {
   disable_raw_mode();
-  clrscr();
+  system("clear");
   exit(EXIT_SUCCESS);
 }
 

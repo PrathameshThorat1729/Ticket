@@ -14,85 +14,111 @@ int hangman()
   add_option(QUIT, "Quit", &end_opts);
   
   char* word;
-  int word_len, wrong = 0;
+  char entered[] = "------";
+  int word_len = 0, wrong = 0;
   int win = -1; // -1 for Game Running
                 // 0 for Game Lost
                 // 1 for Game Won
   
   generate_word(&word, &word_len);
-  char* tmp_word = (char*)malloc(sizeof(char) * (word_len + 1));
-  memset(tmp_word, '-', sizeof(word));
-  tmp_word[word_len] = '\0';
   
-  do
+  if (word == NULL) page = HOME_PAGE;
+  else
   {
-    int ch;
-    key = get_key(csi, &ch);
+    char* tmp_word = (char*)malloc(sizeof(char) * (word_len + 1));
+    memset(tmp_word, '-', sizeof(word));
+    tmp_word[word_len] = '\0';
     
-    if (ch >= 'A' && ch <= 'z' && win == -1)
+    do
     {
-      if (ch <= 'Z') ch += 'a' - 'A'; // converting into lower case
-      int match = 0;
-      for (int i = 0; i < word_len; i++)
+      int ch;
+      key = get_key(csi, &ch);
+      
+      if (ch >= 'A' && ch <= 'z' && win == -1)
       {
-        if (ch == word[i] && tmp_word[i] == '-') 
-        { tmp_word[i] = (char)ch; match = 1; break; }
-      }
-      wrong += (match) ? 0 : 1;
-    }
-    if(!strcmp(word, tmp_word)) win = 1;
-    else if (wrong >= 6) win = 0;
-    
-    if (win != -1)
-    {
-      change_option(key, &end_opts);
-      if (key == ENTER)
-      {
-        switch(get_current_option(&end_opts))
+        if (ch <= 'Z') ch += 'a' - 'A'; // converting into lower case
+        int match = 0;
+        if (strchr(entered, ch) != NULL) match = 1;
+        for (int i = 0; i < word_len && match == 0; i++)
         {
-          case REPLAY:
-            generate_word(&word, &word_len);
-            realloc(tmp_word, sizeof(char) * (word_len + 1));
-            memset(tmp_word, '-', sizeof(word));
-            tmp_word[word_len] = '\0';
-            win = -1;
-            wrong = 0;
-            break;
-          case QUIT: page = HOME_PAGE;
+          if (ch == word[i] && tmp_word[i] == '-') 
+          { tmp_word[i] = (char)ch; match = 1; break; }
+        }
+        if (!match)
+          entered[wrong++] = ch;
+      }
+      if(!strcmp(word, tmp_word)) win = 1;
+      else if (wrong >= 6) win = 0;
+      
+      if (win != -1)
+      {
+        change_option(key, &end_opts);
+        if (key == ENTER)
+        {
+          switch(get_current_option(&end_opts))
+          {
+            case REPLAY:
+              generate_word(&word, &word_len);
+              free(tmp_word);
+              tmp_word = (char*)malloc(sizeof(char) * (word_len + 1));
+              memset(tmp_word, '-', sizeof(char) * word_len);
+              tmp_word[word_len] = '\0';
+              win = -1;
+              wrong = 0;
+              strcpy(entered, "------");
+              break;
+            case QUIT: page = HOME_PAGE;
+          }
         }
       }
-    }
-    
-    print_header();
-    print_hangman(wrong);
-    printf("\n\t\033[36;1mEnter Word : \033[0m");
-    for (int i = 0; i < word_len; i++)
-    {
-      if (tmp_word[i] == '-')
-        printf(" %c ", tmp_word[i]);
-      else
-        printf(" \033[32;1m%c\033[0m ", tmp_word[i]);
-    }
-    printf("\n\t[\033[36;2m%d letters\033[0m]\n", word_len);
-    
-    if (win == 1) printf("\n\t\033[1mYou Saved the Man, You won\033[0m\n");
-    if (win == 0) printf("\n\t\033[1mHe got Hanged, The Original word was \033[32;1m%s\033[0m\n\n", word);
-    if (win != -1) print_options(&end_opts);
-    
-    ch = 0;
-  } while(page == HANGMAN_PAGE && (csi = getc(stdin)) != EOF);
-  
-  free(tmp_word);
+      
+      print_header();
+      printf("\n\t\033[36;1mTried : \033[0m");
+      for (int i = 0; i < 6; i++)
+      {
+        if (entered[i] == '-')
+          printf(" %c ", entered[i]);
+        else
+          printf(" \033[33;1m%c\033[0m ", entered[i]);
+      }
+      printf("\n");
+      print_hangman(wrong);
+      printf("\n\t\033[36;1mWord is : \033[0m");
+      for (int i = 0; i < word_len; i++)
+      {
+        if (tmp_word[i] == '-')
+          printf(" %c ", tmp_word[i]);
+        else
+          printf(" \033[32;1m%c\033[0m ", tmp_word[i]);
+      }
+      printf("\n\t[\033[36;2m%d letters\033[0m]\n", word_len);
+      
+      if (win == 1) printf("\n\t\033[1mYou Saved the Man, You won\033[0m\n\n");
+      if (win == 0) printf("\n\t\033[1mHe got Hanged,\n\tThe Original word was \033[32;1m%s\033[0m\n\n", word);
+      if (win != -1) print_options(&end_opts);
+      
+      ch = 0;
+    } while(page == HANGMAN_PAGE && (csi = getc(stdin)) != EOF);
+    free(tmp_word);
+  }
+
   free(word);
+  free_options(&end_opts);
   return page;
 }
 
 void generate_word(char** word, int* word_len)
 {
   char filename[256];
-  strcat(strcpy(filename, getenv("HOME")), "/programming/Ticket/resource/hangman_words.txt");
+  strcat(strcpy(filename, getenv("HOME")), "/.config/Ticket/hangman_words.txt");
   
   FILE* word_file = fopen(filename,"r");
+  
+  if (!word_file)
+  {
+    *word = NULL;
+    return;
+  }
   
   int total_words, max_word_len;
   fscanf(word_file, "%d %d", &total_words, &max_word_len);
@@ -110,7 +136,7 @@ void generate_word(char** word, int* word_len)
 
 void print_hangman(int wrong)
 {
-  printf("\t\t   ┏━━━━━━━━┑");
+  printf("\n\t\t   ┏━━━━━━━━┑");
   printf("\n\t\t   \033[30;47;2m▉\033[0m        ╿");
   printf("\n\t\t   ▉        ");
   if (wrong >= 1) printf("O");

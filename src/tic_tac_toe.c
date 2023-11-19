@@ -142,11 +142,11 @@ int tic_tac_toe()
     {
       game_running = 0;
       if (winner == T)
-        printf("\n\tNo one won, It's a \033[32;1mTie\033[0m\n");
+        printf("\n\tNo one won, It's a \033[32;1mTie\033[0m\n\n");
       else
       {
-        if (player == X) printf("\n\t\033[32;1mX\033[0m won\n");
-        else if (player == O) printf("\n\t\033[32;1mO\033[0m won\n");
+        if (winner == X) printf("\n\t\033[32;1mX\033[0m won\n\n");
+        else if (winner == O) printf("\n\t\033[32;1mO\033[0m won\n\n");
       }
       print_options(&end_opts);
     }
