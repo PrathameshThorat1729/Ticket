@@ -3,7 +3,7 @@
 ###############################
 
 PROJECT = Ticket
-VERSION = v0.6
+VERSION = v0.7
 EXE = ticket
 
 SRCDIR = src
@@ -17,7 +17,7 @@ OBJDIR = bin/obj
 
 .PHONY: build obj run clean install
 
-SRCS = $(wildcard $(SRCDIR)/*.c) # Source File List
+SRCS = $(wildcard $(SRCDIR)/*.c $(SRCDIR)/*/*.c) # Source File List
 OBJS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS)) # Object File List
 
 # Default Target
@@ -42,12 +42,12 @@ $(BUILDDIR):
 	mkdir -p $@
 
 $(OBJDIR):
-	mkdir -p $@
+	mkdir -p $@ $@/games
 
 # Cleaning Target
 clean:
-	rm -rf $(BUILDDIR)/* $(OBJDIR)/* ~/.config/$(PROJECT)
+	rm -rf $(BUILDDIR) $(OBJDIR) ~/.config/$(PROJECT)
 
-install: build
+install: all
 	mkdir -p ~/.config/$(PROJECT)
 	cp -r resource/* ~/.config/$(PROJECT)

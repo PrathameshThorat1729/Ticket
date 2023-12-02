@@ -1,4 +1,4 @@
-#include "tic_tac_toe.h"
+#include "games/tic_tac_toe.h"
 
 // N statnds for none and NONE is used
 // in utils.h -> enum Keys { ... }
@@ -93,7 +93,8 @@ int tic_tac_toe()
     
     if (game_running == 1 && winner == N)
     {
-      if (key == ARROW_UP && pos[1] > 0) pos[1]--;
+      if (key == CTRL_Q) { page = HOME_PAGE; continue; }
+      else if (key == ARROW_UP && pos[1] > 0) pos[1]--;
       else if (key == ARROW_DOWN && pos[1] < 2) pos[1]++;
       else if (key == ARROW_LEFT && pos[0] > 0) pos[0]--;
       else if (key == ARROW_RIGHT && pos[0] < 2) pos[0]++;
@@ -102,12 +103,12 @@ int tic_tac_toe()
         nth_move++;
         game_state[pos[1]][pos[0]] = player;
         player = (player == X) ? O : X;
-        winner = detect_win(game_state, win);
+        winner = detect_ttt_win(game_state, win);
       }
       if (game_mode == PTC && player == O && winner == N)
       {
         make_move(nth_move++, game_state);
-        winner = detect_win(game_state, win);
+        winner = detect_ttt_win(game_state, win);
         player = (player == X) ? O : X;
       }
     }
@@ -156,7 +157,7 @@ int tic_tac_toe()
   return page;
 }
 
-int detect_win(int game_state[3][3], int win[8][3][2])
+int detect_ttt_win(int game_state[3][3], int win[8][3][2])
 {
   int is_tie = 1;
   for (int i = 0; i < 8; i++)

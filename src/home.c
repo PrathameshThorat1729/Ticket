@@ -8,6 +8,7 @@ int home_page()
   conf_options(QUIT_PAGE, &pages);
   add_option(TIC_TAC_TOE_PAGE, "Tic-Tac-Toe",&pages);
   add_option(HANGMAN_PAGE, "Hangman",&pages);
+  add_option(SUDOKU_PAGE, "Sudoku",&pages);
   add_option(QUIT_PAGE, "Exit",&pages);
   
   do

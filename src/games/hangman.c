@@ -1,4 +1,4 @@
-#include "hangman.h"
+#include "games/hangman.h"
 
 int hangman()
 {
@@ -33,6 +33,8 @@ int hangman()
     {
       int ch;
       key = get_key(csi, &ch);
+      
+      if (win == -1 && key == CTRL_Q) { page = HOME_PAGE; continue; }
       
       if (ch >= 'A' && ch <= 'z' && win == -1)
       {
@@ -87,9 +89,9 @@ int hangman()
       for (int i = 0; i < word_len; i++)
       {
         if (tmp_word[i] == '-')
-          printf(" %c ", tmp_word[i]);
+          printf(" %c", tmp_word[i]);
         else
-          printf(" \033[32;1m%c\033[0m ", tmp_word[i]);
+          printf(" \033[32;1m%c\033[0m", tmp_word[i]);
       }
       printf("\n\t[\033[36;2m%d letters\033[0m]\n", word_len);
       

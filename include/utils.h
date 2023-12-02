@@ -15,6 +15,7 @@ enum Keys {
   ARROW_DOWN,
   ARROW_LEFT,
   ENTER,
+  CTRL_Q,
   NONE
 };
 

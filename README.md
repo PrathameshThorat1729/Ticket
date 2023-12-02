@@ -21,7 +21,7 @@ use
 ```bash
 $ make run
 ```
-for instant running ir run '*bin/buildticket*'
+for instant running, run file '*bin/build/ticket*'
 
 objects are stored in '*bin/obj/*'
 

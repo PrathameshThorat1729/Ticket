@@ -56,6 +56,7 @@ int get_key(int csi, int* raw_key)
       case 'D': return ARROW_LEFT; break;
     }
   }
+  else if (csi == 17) return CTRL_Q;
   else if (csi == '\n') return ENTER;
   if (raw_key != NULL) *raw_key = csi;
   return NONE;
